@@ -105,6 +105,20 @@ Client-for-Dowloading/
    ```bash
    composer install
    ```
+   
+   **Troubleshooting:**
+   - If you get `No composer.lock file present` error, run:
+     ```bash
+     composer update
+     ```
+   - If you get package not found errors, install dependencies directly:
+     ```bash
+     composer require laravel/framework:^9.0 fruitcake/laravel-cors:^2.0 laravel/sanctum:^2.14 guzzlehttp/guzzle:^7.2
+     ```
+   - Then regenerate the lock file:
+     ```bash
+     composer update --lock
+     ```
 
 3. **Copy environment file:**
    ```bash
