@@ -1,11 +1,11 @@
 # Media Downloader - Desktop Web Application
 
-A comprehensive media downloader application built with **Laravel (Backend)** and **React.js (Frontend)** that allows users to search, preview, and download media from various platforms like Pixabay, Safebooru, and Unsplash.
+A comprehensive media downloader application built with **Laravel (Backend)** and **React.js (Frontend)** that allows users to search, preview, and download media from various platforms like Pixabay, Safebooru, Danbooru and Unsplash.
 
 ## Features
 
 ### Core Functionality
-- **Multi-platform support**: Pixabay, Safebooru, Unsplash
+- **Multi-platform support**: Pixabay, Safebooru, Danbooru, Unsplash
 - **Search with filters**: Query, tags, category, orientation
 - **Grid view display**: Responsive media grid with thumbnails
 - **Preview functionality**: Preview images and videos before downloading
@@ -14,14 +14,14 @@ A comprehensive media downloader application built with **Laravel (Backend)** an
 
 ### Advanced Features
 - **Custom naming patterns**: Use placeholders like `{author}_{id}_{index}` to customize downloaded file names
-- **Destination folder selection**: Specify where files should be saved
+- **Destination folder selection**: Choose where files should be saved with multiple options
 - **Download progress tracking**: Real-time progress updates
 - **Download history**: View and manage all previous downloads
 - **API source management**: Add, edit, delete, and test custom API sources
 
 ### User Interface
 - **Dark theme with high contrast**: Background and text colors are properly contrasted
-- **Responsive design**: Works on desktop and mobile devices
+- **Responsive design**: Works on desktop
 - **Clear notifications**: Toast notifications for all actions
 - **Simple and intuitive**: Easy-to-use interface
 
@@ -30,71 +30,42 @@ A comprehensive media downloader application built with **Laravel (Backend)** an
 ```
 Client-for-Dowloading/
 ├── backend/                 # Laravel Backend
-│   ├── app/
-│   │   ├── Http/
-│   │   │   ├── Controllers/
-│   │   │   │   ├── MediaController.php
-│   │   │   │   ├── ApiSourceController.php
-│   │   │   │   └── DownloadController.php
-│   │   │   └── Jobs/
-│   │   │       └── DownloadMediaJob.php
-│   │   ├── Models/
-│   │   │   ├── ApiSource.php
-│   │   │   ├── DownloadJob.php
-│   │   │   └── User.php
-│   │   └── Providers/
-│   ├── config/
-│   │   ├── app.php
-│   │   ├── cors.php
-│   │   ├── database.php
-│   │   ├── sanctum.php
-│   │   └── services.php
-│   ├── database/
-│   │   ├── migrations/
-│   │   ├── seeders/
-│   │   └── factories/
-│   ├── routes/
-│   │   ├── api.php
-│   │   └── web.php
-│   └── .env.example
-│   └── composer.json
+│   ├── app/                  # Controllers, Models, Jobs
+│   ├── config/               # Application configuration
+│   ├── database/             # Migrations, Seeders, Factories
+│   ├── routes/               # API routes
+│   └── composer.json         # PHP dependencies
 │
 └── frontend/                # React.js Frontend
-    ├── public/
     ├── src/
-    │   ├── components/
-    │   │   ├── MediaGrid.jsx
-    │   │   └── DownloadModal.jsx
-    │   ├── pages/
-    │   │   ├── MediaSearchPage.jsx
-    │   │   ├── ApiSourcesPage.jsx
-    │   │   └── DownloadHistoryPage.jsx
-    │   ├── hooks/
-    │   │   └── useDownload.js
-    │   ├── services/
-    │   │   └── api.js
-    │   ├── utils/
-    │   ├── App.jsx
-    │   ├── main.jsx
-    │   ├── index.css
-    │   └── index.html
-    ├── package.json
-    ├── tailwind.config.js
-    ├── postcss.config.js
-    └── vite.config.js
+    │   ├── components/       # MediaGrid, DownloadModal, PathSelector
+    │   ├── pages/             # MediaSearch, ApiSources, History
+    │   ├── hooks/             # useDownload
+    │   ├── services/          # API services
+    │   └── App.jsx            # Main application
+    └── package.json           # JS dependencies
 ```
+
+## System Requirements
+
+### Backend (Laravel)
+- **PHP**: 8.0 or higher
+- **Composer**: For dependency management
+- **Web Server**: Apache, Nginx, or built-in PHP server
+
+### Frontend (React.js)
+- **Node.js**: 18 or higher
+- **npm** or **yarn**: For JavaScript dependency management
+
+### Database (Optional)
+- **No database required**: Can run with `DB_CONNECTION=file`
+- **SQLite**: Simple, no server required
+- **MySQL**: 5.7+ or 8.0+
+- **PostgreSQL**: 9.6+
 
 ## Installation
 
-### Prerequisites
-
-- **PHP 8.0 or higher**
-- **Composer** (for PHP dependencies)
-- **Node.js 18 or higher** (for JavaScript dependencies)
-- **npm or yarn** (for JavaScript package management)
-- **Database (optional)**: MySQL, PostgreSQL, or SQLite - **Note: The application can run without a database using the `file` driver**
-
-### Backend Setup (Laravel)
+### Backend (Laravel)
 
 1. **Navigate to the backend directory:**
    ```bash
@@ -113,7 +84,7 @@ Client-for-Dowloading/
      ```
    - If you get package not found errors, install dependencies directly:
      ```bash
-     composer require laravel/framework:^9.0 fruitcake/laravel-cors:^2.0 laravel/sanctum:^2.14 guzzlehttp/guzzle:^7.2
+     composer require laravel/framework:^9.0 laravel/sanctum:^2.14 guzzlehttp/guzzle:^7.2
      ```
    - Then regenerate the lock file:
      ```bash
@@ -133,12 +104,11 @@ Client-for-Dowloading/
 5. **Configure database (optional):**
    
    **Option A: No Database (Recommended for simple usage)**
-   Use the file driver which doesn't require a database:
    ```ini
    DB_CONNECTION=file
    ```
    
-   **Option B: SQLite (Simple setup)**
+   **Option B: SQLite**
    ```ini
    DB_CONNECTION=sqlite
    DB_DATABASE=/absolute/path/to/backend/database/database.sqlite
@@ -172,8 +142,6 @@ Client-for-Dowloading/
    ```bash
    php artisan migrate
    ```
-   
-   **Note:** If you're using `DB_CONNECTION=file`, you can skip this step as no database is required.
 
 7. **Configure API keys:**
    Get API keys from the respective platforms and add them to `.env`:
@@ -196,7 +164,7 @@ Client-for-Dowloading/
    
    The backend will be available at `http://localhost:8000`
 
-### Frontend Setup (React.js)
+### Frontend (React.js)
 
 1. **Navigate to the frontend directory:**
    ```bash
@@ -215,23 +183,85 @@ Client-for-Dowloading/
    
    The frontend will be available at `http://localhost:3000`
 
-### Docker Setup (Optional)
+## Usage
 
-Alternatively, you can use Docker to run the entire application:
+### Using the Application
 
-1. **Build and start containers:**
-   ```bash
-   docker-compose up -d
-   ```
+1. **Search Media:**
+   - Select a platform from the dropdown (Pixabay, Safebooru, Danbooru, Unsplash)
+   - Enter your search query and/or tags
+   - Optionally filter by category and orientation (where supported)
+   - Click "Search" or press Enter
 
-2. **Run migrations:**
-   ```bash
-   docker-compose exec backend php artisan migrate
-   ```
+2. **Preview Media:**
+   - Click on any media thumbnail to preview
+   - Images and videos can be previewed before downloading
 
-3. **Access the application:**
-   - Backend: `http://localhost:8000`
-   - Frontend: `http://localhost:3000`
+3. **Select Files:**
+   - Check the checkbox on each media item to select it
+   - Use "Select All" to select all items on the current page
+
+4. **Download:**
+   - Click "Download Selected" or download individual files
+   - In the download modal:
+     - **Select destination folder**:
+       - **Browse**: Visually navigate through directories
+       - **Quick Select**: Use predefined system paths (Downloads, Documents, Pictures, Desktop)
+       - **Recent Paths**: Access recently used download locations
+       - **Manual Entry**: Type the full path directly
+       - **Default**: Use a saved default path
+     - **Configure naming pattern**: Use placeholders
+     - Click "Start Download"
+
+5. **View Download History:**
+   - Navigate to the "History" page
+   - View all download jobs with their status and progress
+   - Cancel ongoing downloads
+   - Delete history entries
+
+6. **Manage API Sources:**
+   - Navigate to the "API Sources" page
+   - Add new API sources for custom platforms
+   - Edit or delete existing sources
+   - Test connections before saving
+
+## Naming Pattern Placeholders
+
+When downloading files, you can use the following placeholders in the naming pattern:
+
+- `{author}` - The author/creator of the media
+- `{id}` - The unique ID of the media
+- `{index}` - The index number in the batch download
+- `{type}` - The media type (image or video)
+- `{timestamp}` - Current timestamp (format: YYYYMMDD_HHMMSS)
+- `{random}` - A random 8-character string
+
+**Examples:**
+- `{author}_{id}_{index}.jpg` -> `john_doe_12345_0.jpg`
+- `{type}/{author}/{timestamp}_{id}` -> `image/john_doe/20240115_123045_12345.jpg`
+- `{random}_{id}` -> `abc12345_12345.jpg`
+
+## Download Settings
+
+### Destination Folder Selection
+The application provides multiple ways to select where files should be saved:
+
+1. **Browse Mode**: Click "Browse" to navigate through your file system with a visual directory browser
+2. **Quick Select**: Use predefined system paths (Downloads, Documents, Pictures, Desktop)
+3. **Recent Paths**: Access your recently used download locations
+4. **Manual Entry**: Type the full path directly
+5. **Default Path**: Set a default download location that's automatically selected
+
+### Creating New Directories
+- In Browse mode, click "Create New Directory" to make a new folder
+- Enter the directory name and click "Create"
+- The new directory will appear in the current folder
+
+### Setting Default Download Path
+To set a default download path:
+1. Select your desired path using any of the methods above
+2. The path will be saved as your default for future downloads
+3. Click "Default" button to quickly use your saved default path
 
 ## Configuration
 
@@ -292,81 +322,6 @@ proxy: {
 }
 ```
 
-## Usage
-
-### Using the Application
-
-1. **Search Media:**
-   - Select a platform from the dropdown (Pixabay, Safebooru, Danbooru, Unsplash)
-   - Enter your search query and/or tags
-   - Optionally filter by category and orientation (where supported)
-   - Click "Search" or press Enter
-
-2. **Preview Media:**
-   - Click on any media thumbnail to preview
-   - Images and videos can be previewed before downloading
-
-3. **Select Files:**
-   - Check the checkbox on each media item to select it
-   - Use "Select All" to select all items on the current page
-
-4. **Download:**
-   - Click "Download Selected" or download individual files
-   - In the download modal:
-     - Set the destination folder path
-     - Configure the naming pattern using placeholders
-     - Click "Start Download"
-
-5. **View Download History:**
-   - Navigate to the "History" page
-   - View all download jobs with their status and progress
-   - Cancel ongoing downloads
-   - Delete history entries
-
-6. **Manage API Sources:**
-   - Navigate to the "API Sources" page
-   - Add new API sources for custom platforms
-   - Edit or delete existing sources
-   - Test connections before saving
-
-### Download Settings
-
-#### Destination Folder Selection
-The application provides multiple ways to select where files should be saved:
-
-1. **Browse Mode**: Click "Browse" to navigate through your file system with a visual directory browser
-2. **Quick Select**: Use predefined system paths (Downloads, Documents, Pictures, Desktop)
-3. **Recent Paths**: Access your recently used download locations
-4. **Manual Entry**: Type the full path directly
-5. **Default Path**: Set a default download location that's automatically selected
-
-#### Creating New Directories
-- In Browse mode, click "Create New Directory" to make a new folder
-- Enter the directory name and click "Create"
-- The new directory will appear in the current folder
-
-#### Setting Default Download Path
-To set a default download path:
-1. Select your desired path using any of the methods above
-2. The path will be saved as your default for future downloads
-3. Click "Default" button to quickly use your saved default path
-
-### Naming Pattern Placeholders
-
-When downloading files, you can use the following placeholders in the naming pattern:
-
-- `{author}` - The author/creator of the media
-- `{id}` - The unique ID of the media
-- `{index}` - The index number in the batch download
-- `{type}` - The media type (image or video)
-- `{timestamp}` - Current timestamp (format: YYYYMMDD_HHMMSS)
-- `{random}` - A random 8-character string
-
-**Examples:**
-- `{author}_{id}_{index}.jpg` → `john_doe_12345_0.jpg`
-- `{type}/{author}/{timestamp}_{id}` → `image/john_doe/20240115_123045_12345.jpg`
-- `{random}_{id}` → `abc12345_12345.jpg`
-
 ## API Endpoints
 
 ### Settings Endpoints
@@ -400,6 +355,19 @@ When downloading files, you can use the following placeholders in the naming pat
 ### Utility Endpoints
 - `GET /api/config` - Get application configuration
 
+## Supported Platforms
+
+### No API Key Required
+- **Safebooru**: Free anime-style images, no authentication needed
+
+### API Key Required
+- **Pixabay**: High-quality stock photos, illustrations, and videos
+- **Danbooru**: Anime-style images with extensive tagging system
+- **Unsplash**: High-resolution photography
+
+### Custom APIs
+You can also add your own custom API sources through the API Sources management page.
+
 ## Technology Stack
 
 ### Backend
@@ -407,15 +375,9 @@ When downloading files, you can use the following placeholders in the naming pat
 - **PHP**: 8.0+
 - **Database**: MySQL/PostgreSQL/SQLite/File (no database required)
 - **Authentication**: Laravel Sanctum
-- **CORS**: Laravel CORS package
+- **CORS**: Built-in Laravel CORS support
 - **HTTP Client**: Guzzle HTTP
 - **Queue**: Laravel Queue (for async downloads)
-
-### Supported Media Platforms
-- **Pixabay**: Stock photos, illustrations, videos
-- **Safebooru**: Safe anime-style images
-- **Danbooru**: Anime-style images with extensive tagging
-- **Unsplash**: High-quality photography
 
 ### Frontend
 - **Framework**: React.js 18.x
@@ -425,20 +387,6 @@ When downloading files, you can use the following placeholders in the naming pat
 - **HTTP Client**: Axios
 - **Notifications**: React Hot Toast
 - **Routing**: React Router DOM
-
-## Running Tests
-
-### Backend Tests
-```bash
-cd backend
-php artisan test
-```
-
-### Frontend Tests
-```bash
-cd frontend
-npm test
-```
 
 ## Troubleshooting
 
@@ -465,7 +413,7 @@ npm test
    - Check your database connection settings in `.env`
    - If you don't need database features, switch to `DB_CONNECTION=file`
 
-4. **File Download Failures:**
+5. **File Download Failures:**
    - Ensure the destination folder exists and is writable
    - Check file permissions
    - Verify the URL is accessible
@@ -478,6 +426,20 @@ APP_DEBUG=true
 ```
 
 This will provide detailed error messages in the browser and logs.
+
+## Testing
+
+### Backend Tests
+```bash
+cd backend
+php artisan test
+```
+
+### Frontend Tests
+```bash
+cd frontend
+npm test
+```
 
 ## Contributing
 
@@ -500,3 +462,5 @@ For support, please open an issue on the GitHub repository.
 ---
 
 **Built with ❤️ using Laravel and React.js**
+
+**Vietnamese Documentation**: See [README_VN.md](README_VN.md) for Vietnamese instructions.

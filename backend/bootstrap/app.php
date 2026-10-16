@@ -12,9 +12,8 @@ return Application::configure(basePath: dirname(__DIR__, 2))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware) {
-        $middleware->alias([
-            'cors' => \Fruitcake\Cors\HandleCors::class,
-        ]);
+        // CORS middleware is handled by Laravel's built-in CORS support in Laravel 9+
+        // No need for fruitcake/laravel-cors package
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //

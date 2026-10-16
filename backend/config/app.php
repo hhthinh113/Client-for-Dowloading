@@ -100,7 +100,7 @@ return [
         Illuminate\Validation\ValidationServiceProvider::class,
         Illuminate\View\ViewServiceProvider::class,
         Laravel\Sanctum\SanctumServiceProvider::class,
-        Fruitcake\Cors\CorsServiceProvider::class,
+        App\Providers\CorsServiceProvider::class,
     ],
 
     /*
