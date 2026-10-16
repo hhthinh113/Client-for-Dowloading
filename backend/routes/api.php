@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\MediaController;
 use App\Http\Controllers\ApiSourceController;
 use App\Http\Controllers\DownloadController;
+use App\Http\Controllers\SettingsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -41,6 +42,16 @@ Route::prefix('download')->group(function () {
     Route::get('/status/{jobId}', [DownloadController::class, 'getStatus']);
     Route::get('/progress/{jobId}', [DownloadController::class, 'getProgress']);
     Route::post('/cancel/{jobId}', [DownloadController::class, 'cancelDownload']);
+});
+
+// Settings routes
+Route::prefix('settings')->group(function () {
+    Route::get('/download', [SettingsController::class, 'getDownloadSettings']);
+    Route::post('/download', [SettingsController::class, 'saveDownloadSettings']);
+    Route::post('/download/recent', [SettingsController::class, 'saveRecentPath']);
+    Route::post('/directories', [SettingsController::class, 'listDirectories']);
+    Route::post('/directories/create', [SettingsController::class, 'createDirectory']);
+    Route::post('/path/check', [SettingsController::class, 'checkPath']);
 });
 
 // Utility routes

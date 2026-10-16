@@ -43,7 +43,8 @@ const MediaSearchPage = ({ config }) => {
   const [previewUrl, setPreviewUrl] = useState(null);
   const [previewType, setPreviewType] = useState(null);
 
-  const { startDownload, startBatchDownload, isDownloading } = useDownload();
+  const { startDownload, startBatchDownload, isDownloading, downloads } = useDownload();
+  const [showDownloadModal, setShowDownloadModal] = useState(false);
 
   const fetchMedia = useCallback(async () => {
     if (!query.trim() && !tags.trim()) {

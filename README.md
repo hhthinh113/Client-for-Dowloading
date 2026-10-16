@@ -315,6 +315,28 @@ proxy: {
    - Edit or delete existing sources
    - Test connections before saving
 
+### Download Settings
+
+#### Destination Folder Selection
+The application provides multiple ways to select where files should be saved:
+
+1. **Browse Mode**: Click "Browse" to navigate through your file system with a visual directory browser
+2. **Quick Select**: Use predefined system paths (Downloads, Documents, Pictures, Desktop)
+3. **Recent Paths**: Access your recently used download locations
+4. **Manual Entry**: Type the full path directly
+5. **Default Path**: Set a default download location that's automatically selected
+
+#### Creating New Directories
+- In Browse mode, click "Create New Directory" to make a new folder
+- Enter the directory name and click "Create"
+- The new directory will appear in the current folder
+
+#### Setting Default Download Path
+To set a default download path:
+1. Select your desired path using any of the methods above
+2. The path will be saved as your default for future downloads
+3. Click "Default" button to quickly use your saved default path
+
 ### Naming Pattern Placeholders
 
 When downloading files, you can use the following placeholders in the naming pattern:
@@ -332,6 +354,14 @@ When downloading files, you can use the following placeholders in the naming pat
 - `{random}_{id}` → `abc12345_12345.jpg`
 
 ## API Endpoints
+
+### Settings Endpoints
+- `GET /api/settings/download` - Get download settings (default path, recent paths)
+- `POST /api/settings/download` - Save download settings
+- `POST /api/settings/download/recent` - Save a recent path
+- `POST /api/settings/directories` - List directories in a path
+- `POST /api/settings/directories/create` - Create a new directory
+- `POST /api/settings/path/check` - Check if a path exists and is writable
 
 ### Media Endpoints
 - `GET /api/media/search` - Search media across platforms
