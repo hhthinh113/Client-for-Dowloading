@@ -5,6 +5,7 @@ import toast from 'react-hot-toast';
 const PLATFORMS = [
   { value: 'pixabay', label: 'Pixabay' },
   { value: 'safebooru', label: 'Safebooru' },
+  { value: 'danbooru', label: 'Danbooru' },
   { value: 'unsplash', label: 'Unsplash' },
   { value: 'custom', label: 'Custom' },
 ];

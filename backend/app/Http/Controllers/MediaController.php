@@ -12,7 +12,7 @@ class MediaController extends Controller
     public function search(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'platform' => 'required|in:pixabay,safebooru,unsplash',
+            'platform' => 'required|in:pixabay,safebooru,danbooru,unsplash',
             'query' => 'required|string|max:255',
             'page' => 'nullable|integer|min:1',
             'per_page' => 'nullable|integer|min:1|max:100',
@@ -104,6 +104,8 @@ class MediaController extends Controller
                 return $this->searchPixabay($query, $page, $perPage, $tags, $category, $orientation);
             case 'safebooru':
                 return $this->searchSafebooru($query, $page, $perPage, $tags);
+            case 'danbooru':
+                return $this->searchDanbooru($query, $page, $perPage, $tags);
             case 'unsplash':
                 return $this->searchUnsplash($query, $page, $perPage);
             default:
@@ -239,6 +241,73 @@ class MediaController extends Controller
             'page' => $page,
             'per_page' => $perPage,
             'total_pages' => 1,
+        ];
+    }
+
+    protected function searchDanbooru($query, $page = 1, $perPage = 20, $tags = null)
+    {
+        $username = config('services.danbooru.username');
+        $apiKey = config('services.danbooru.api_key');
+        
+        $searchTags = $query;
+        if ($tags) {
+            $searchTags .= ' ' . $tags;
+        }
+
+        $params = [
+            'tags' => $searchTags,
+            'page' => $page,
+            'limit' => $perPage,
+        ];
+
+        $response = Http::withBasicAuth($username, $apiKey)
+            ->get('https://danbooru.donmai.us/posts.json', $params);
+
+        if (!$response->successful()) {
+            throw new \Exception('Danbooru API request failed: ' . $response->status());
+        }
+
+        $data = $response->json();
+        
+        if (!is_array($data)) {
+            throw new \Exception('Invalid response from Danbooru API');
+        }
+
+        $results = [];
+        foreach ($data as $post) {
+            $fileUrl = $post['file_url'] ?? $post['large_file_url'] ?? $post['preview_file_url'] ?? '';
+            $previewUrl = $post['preview_file_url'] ?? $post['file_url'] ?? '';
+            
+            if (!$fileUrl) {
+                continue;
+            }
+
+            $results[] = [
+                'id' => $post['id'],
+                'platform' => 'danbooru',
+                'title' => $post['tag_string_general'] ?? '',
+                'author' => $post['tag_string_artist'] ?? 'Unknown',
+                'type' => $this->getMediaTypeFromExtension($fileUrl),
+                'url' => $fileUrl,
+                'preview_url' => $previewUrl,
+                'full_url' => $fileUrl,
+                'thumbnail_url' => $previewUrl,
+                'width' => $post['image_width'] ?? 0,
+                'height' => $post['image_height'] ?? 0,
+                'size' => $post['file_size'] ?? 0,
+                'views' => $post['fav_count'] ?? 0,
+                'downloads' => 0,
+                'likes' => $post['score'] ?? 0,
+                'tags' => explode(' ', $post['tag_string'] ?? ''),
+            ];
+        }
+
+        return [
+            'results' => $results,
+            'total' => count($results),
+            'page' => $page,
+            'per_page' => $perPage,
+            'total_pages' => ceil(count($results) / $perPage),
         ];
     }
 

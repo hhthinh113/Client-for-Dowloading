@@ -26,7 +26,7 @@ class ApiSourceController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
-            'platform' => 'required|in:pixabay,safebooru,unsplash,custom',
+            'platform' => 'required|in:pixabay,safebooru,danbooru,unsplash,custom',
             'base_url' => 'required|url',
             'api_key' => 'nullable|string',
             'endpoint' => 'nullable|string',
@@ -63,7 +63,7 @@ class ApiSourceController extends Controller
 
         $validator = Validator::make($request->all(), [
             'name' => 'sometimes|string|max:255',
-            'platform' => 'sometimes|in:pixabay,safebooru,unsplash,custom',
+            'platform' => 'sometimes|in:pixabay,safebooru,danbooru,unsplash,custom',
             'base_url' => 'sometimes|url',
             'api_key' => 'nullable|string',
             'endpoint' => 'nullable|string',
@@ -131,12 +131,26 @@ class ApiSourceController extends Controller
                         'limit' => 1,
                     ]);
                     break;
+                case 'danbooru':
+                    $response = Http::withBasicAuth($apiKey, '')
+                        ->get($baseUrl ?? 'https://danbooru.donmai.us/posts.json', [
+                            'tags' => 'test',
+                            'limit' => 1,
+                        ]);
+                    break;
                 case 'unsplash':
                     $response = Http::get($baseUrl ?? 'https://api.unsplash.com/search/photos', [
                         'query' => 'test',
                         'per_page' => 1,
                         'client_id' => $apiKey,
                     ]);
+                    break;
+                case 'danbooru':
+                    $response = Http::withBasicAuth($apiKey, '')
+                        ->get($baseUrl ?? 'https://danbooru.donmai.us/posts.json', [
+                            'tags' => 'test',
+                            'limit' => 1,
+                        ]);
                     break;
                 case 'custom':
                     $url = rtrim($baseUrl, '/') . '/' . ltrim($endpoint ?? '', '/');

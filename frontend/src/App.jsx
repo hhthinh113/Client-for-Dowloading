@@ -63,6 +63,7 @@ function App() {
                   <span className="px-2 py-1 bg-green-600 text-white text-xs rounded">Unsplash</span>
                 )}
                 <span className="px-2 py-1 bg-green-600 text-white text-xs rounded">Safebooru</span>
+                <span className="px-2 py-1 bg-green-600 text-white text-xs rounded">Danbooru</span>
               </>
             )}
           </div>

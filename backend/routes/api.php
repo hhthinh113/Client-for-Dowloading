@@ -49,6 +49,7 @@ Route::get('/config', function () {
         'pixabay_enabled' => config('services.pixabay.api_key') !== '',
         'unsplash_enabled' => config('services.unsplash.api_key') !== '',
         'safebooru_enabled' => true,
+        'danbooru_enabled' => config('services.danbooru.username') !== '' && config('services.danbooru.api_key') !== '',
     ]);
 });
 

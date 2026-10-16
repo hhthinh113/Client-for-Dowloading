@@ -17,6 +17,12 @@ return [
         'base_url' => 'https://safebooru.org/index.php?page=dapi&s=post&q=index&json=1',
     ],
 
+    'danbooru' => [
+        'username' => env('DANBOORU_USERNAME', ''),
+        'api_key' => env('DANBOORU_API_KEY', ''),
+        'base_url' => 'https://danbooru.donmai.us/',
+    ],
+
     'unsplash' => [
         'api_key' => env('UNSPLASH_API_KEY', ''),
         'base_url' => 'https://api.unsplash.com/',

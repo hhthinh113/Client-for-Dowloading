@@ -92,7 +92,7 @@ Client-for-Dowloading/
 - **Composer** (for PHP dependencies)
 - **Node.js 18 or higher** (for JavaScript dependencies)
 - **npm or yarn** (for JavaScript package management)
-- **MySQL, PostgreSQL, or SQLite** (for database)
+- **Database (optional)**: MySQL, PostgreSQL, or SQLite - **Note: The application can run without a database using the `file` driver**
 
 ### Backend Setup (Laravel)
 
@@ -116,8 +116,25 @@ Client-for-Dowloading/
    php artisan key:generate
    ```
 
-5. **Configure database:**
-   Edit the `.env` file and set your database connection:
+5. **Configure database (optional):**
+   
+   **Option A: No Database (Recommended for simple usage)**
+   Use the file driver which doesn't require a database:
+   ```ini
+   DB_CONNECTION=file
+   ```
+   
+   **Option B: SQLite (Simple setup)**
+   ```ini
+   DB_CONNECTION=sqlite
+   DB_DATABASE=/absolute/path/to/backend/database/database.sqlite
+   ```
+   Then create the SQLite database:
+   ```bash
+   touch database/database.sqlite
+   ```
+   
+   **Option C: MySQL**
    ```ini
    DB_CONNECTION=mysql
    DB_HOST=127.0.0.1
@@ -127,25 +144,36 @@ Client-for-Dowloading/
    DB_PASSWORD=
    ```
    
-   Or use SQLite (default):
+   **Option D: PostgreSQL**
    ```ini
-   DB_CONNECTION=sqlite
-   DB_DATABASE=/absolute/path/to/database.sqlite
+   DB_CONNECTION=pgsql
+   DB_HOST=127.0.0.1
+   DB_PORT=5432
+   DB_DATABASE=media_downloader
+   DB_USERNAME=postgres
+   DB_PASSWORD=postgres
    ```
 
-6. **Run database migrations:**
+6. **Run database migrations (skip if using `file` driver):**
    ```bash
    php artisan migrate
    ```
+   
+   **Note:** If you're using `DB_CONNECTION=file`, you can skip this step as no database is required.
 
 7. **Configure API keys:**
    Get API keys from the respective platforms and add them to `.env`:
    ```ini
    PIXABAY_API_KEY=your_pixabay_api_key
+   DANBOORU_USERNAME=your_danbooru_username
+   DANBOORU_API_KEY=your_danbooru_api_key
    UNSPLASH_API_KEY=your_unsplash_api_key
    ```
    
-   Note: Safebooru doesn't require an API key.
+   **Note:**
+   - Safebooru doesn't require an API key
+   - Danbooru requires both username and API key (get from your Danbooru account settings)
+   - Pixabay and Unsplash require API keys from their respective developer portals
 
 8. **Start the Laravel development server:**
    ```bash
@@ -204,12 +232,34 @@ APP_KEY=
 APP_DEBUG=true
 APP_URL=http://localhost:8000
 
-# Database
-DB_CONNECTION=sqlite
-DB_DATABASE=/path/to/database.sqlite
+# Database (choose one)
+# Option 1: No database (recommended for simple usage)
+DB_CONNECTION=file
+
+# Option 2: SQLite
+# DB_CONNECTION=sqlite
+# DB_DATABASE=/path/to/backend/database/database.sqlite
+
+# Option 3: MySQL
+# DB_CONNECTION=mysql
+# DB_HOST=127.0.0.1
+# DB_PORT=3306
+# DB_DATABASE=media_downloader
+# DB_USERNAME=root
+# DB_PASSWORD=
+
+# Option 4: PostgreSQL
+# DB_CONNECTION=pgsql
+# DB_HOST=127.0.0.1
+# DB_PORT=5432
+# DB_DATABASE=media_downloader
+# DB_USERNAME=postgres
+# DB_PASSWORD=postgres
 
 # API Keys
 PIXABAY_API_KEY=your_pixabay_api_key
+DANBOORU_USERNAME=your_danbooru_username
+DANBOORU_API_KEY=your_danbooru_api_key
 UNSPLASH_API_KEY=your_unsplash_api_key
 
 # CORS
@@ -233,9 +283,9 @@ proxy: {
 ### Using the Application
 
 1. **Search Media:**
-   - Select a platform from the dropdown
+   - Select a platform from the dropdown (Pixabay, Safebooru, Danbooru, Unsplash)
    - Enter your search query and/or tags
-   - Optionally filter by category and orientation
+   - Optionally filter by category and orientation (where supported)
    - Click "Search" or press Enter
 
 2. **Preview Media:**
@@ -311,11 +361,17 @@ When downloading files, you can use the following placeholders in the naming pat
 ### Backend
 - **Framework**: Laravel 9.x
 - **PHP**: 8.0+
-- **Database**: MySQL/PostgreSQL/SQLite
+- **Database**: MySQL/PostgreSQL/SQLite/File (no database required)
 - **Authentication**: Laravel Sanctum
 - **CORS**: Laravel CORS package
 - **HTTP Client**: Guzzle HTTP
 - **Queue**: Laravel Queue (for async downloads)
+
+### Supported Media Platforms
+- **Pixabay**: Stock photos, illustrations, videos
+- **Safebooru**: Safe anime-style images
+- **Danbooru**: Anime-style images with extensive tagging
+- **Unsplash**: High-quality photography
 
 ### Frontend
 - **Framework**: React.js 18.x
@@ -344,18 +400,26 @@ npm test
 
 ### Common Issues
 
-1. **CORS Errors:**
+1. **No Database Connection:**
+   - If you don't need download history or API source management, use `DB_CONNECTION=file`
+   - This mode doesn't require any database setup
+   - Downloads will still work, but history won't be saved
+
+2. **CORS Errors:**
    - Ensure CORS is properly configured in `config/cors.php`
    - Verify `SANCTUM_STATEFUL_DOMAINS` in `.env` includes your frontend domain
+   - Check that your frontend URL matches the configured domains
 
-2. **API Connection Failures:**
+3. **API Connection Failures:**
    - Verify your API keys are correct
    - Check that the API endpoints are accessible
    - Test connections using the "Test Connection" feature
+   - For Danbooru: Ensure both username and API key are configured
 
-3. **Database Issues:**
-   - Run `php artisan migrate:fresh` to reset the database
-   - Check your database connection settings
+4. **Database Issues:**
+   - If using a database, run `php artisan migrate:fresh` to reset
+   - Check your database connection settings in `.env`
+   - If you don't need database features, switch to `DB_CONNECTION=file`
 
 4. **File Download Failures:**
    - Ensure the destination folder exists and is writable

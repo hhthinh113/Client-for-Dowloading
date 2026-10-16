@@ -25,7 +25,7 @@ class ApiSource extends Model
         'is_active' => 'boolean',
     ];
 
-    public static $platforms = ['pixabay', 'safebooru', 'unsplash', 'custom'];
+    public static $platforms = ['pixabay', 'safebooru', 'danbooru', 'unsplash', 'custom'];
 
     public function getPlatformLabelAttribute()
     {

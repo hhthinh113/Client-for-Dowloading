@@ -8,6 +8,7 @@ import { useDownload } from '../hooks/useDownload';
 const PLATFORMS = [
   { value: 'pixabay', label: 'Pixabay' },
   { value: 'safebooru', label: 'Safebooru' },
+  { value: 'danbooru', label: 'Danbooru' },
   { value: 'unsplash', label: 'Unsplash' },
 ];
 
